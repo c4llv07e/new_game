@@ -32,8 +32,9 @@ draw_line(lua_State* state)
   y = lua_tointeger(state, -3);
   x2 = lua_tointeger(state, -2);
   y2 = lua_tointeger(state, -1);
-  lua_pop(state,4);
-  render_line(window, x, y, x2 , y2, (roloC){.alpha = 255, .blue=255, .green=255, .red=255});
+  lua_pop(state, 4);
+  render_line(window, x, y, x2 , y2,
+              (Render_color){.a = 0xff, .b = 0xff, .g = 0xff, .r = 0xff});
   return 0x0;
 }
 
@@ -49,8 +50,9 @@ draw_color_line(lua_State* state)
   g = lua_tonumber(state, -3);
   b = lua_tonumber(state, -2);
   a = lua_tonumber(state, -1);
-  lua_pop(state,8);
-  render_line(window, x, y, x2 , y2, (roloC){.alpha = a, .blue=b, .green=g, .red=r});
+  lua_pop(state, 8);
+  render_line(window, x, y, x2 , y2,
+              (Render_color){.a = a, .b = b, .g = g, .r = r});
   return 0x0;
 }
 
