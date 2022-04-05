@@ -1,2 +1,2 @@
 
-print(testCall())
+print("test", 12, "\n")

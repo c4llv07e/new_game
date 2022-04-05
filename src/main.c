@@ -6,6 +6,7 @@
 #include "game.h"
 #include "render.h"
 #include "lua_game.h"
+#include "lua_lib.h"
 
 /* main */
 
@@ -34,18 +35,19 @@ main(None)
   game_start();
 
   lua_state = lua_state_create();
+  lua_lib_init(lua_state);
   lua_state_register_func(lua_state, "testCall", testCall);
-  lua_state_exec_file(lua_state, "main.lua");
-  lua_state_close(lua_state);
 
   while (!render_window_should_close(window))
     {
       render_window_clear(window);
+      lua_state_exec_file(lua_state, "main.lua");
       render_window_show(window);
       render_window_poll_events(window);
     }
 
   game_end();
+  lua_state_close(lua_state);
   render_window_destroy(window);
 
   if ((current_error = render_terminate()) != ok)
