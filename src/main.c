@@ -6,6 +6,7 @@
 #include "game.h"
 #include "render.h"
 #include "lua_game.h"
+#include "lua_lib.h"
 #include "system.h"
 
 /* main */
@@ -77,6 +78,7 @@ main(None)
   game_start();
 
   lua_state = lua_state_create();
+  lua_lib_init(lua_state);
   lua_state_register_func(lua_state, "testCall", testCall);
   lua_state_register_func(lua_state, "draw_line", draw_line);
   lua_state_register_func(lua_state, "draw_color_line", draw_color_line);
