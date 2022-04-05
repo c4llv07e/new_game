@@ -116,6 +116,7 @@ render_window_clear(Return window)
   if (window.is_null)
     return window;
   rwind = window.data;
+  SDL_SetRenderDrawColor(rwind->render, 0x00, 0x00, 0x00, 0xff);
   SDL_RenderClear(rwind->render);
   return window;
 }
