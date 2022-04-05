@@ -14,7 +14,7 @@ extern Return render_window_show(Return window);
 extern Return render_window_clear(Return window);
 extern Bool render_window_should_close(Return window);
 extern Return render_window_poll_events(Return window);
-extern Return render_line(Return window, Int x,Int y,Int x2,Int y2, roloC color);
+extern Return render_line(Return window, Int x,Int y,Int x2,Int y2, Render_color color);
 
 typedef struct Render_color
 {
