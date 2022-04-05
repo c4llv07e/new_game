@@ -12,6 +12,7 @@ typedef int_fast8_t Bool;
 typedef float SFloat;
 typedef void None;
 typedef void* Ptr;
+typedef int_fast8_t Byte;
 
 #define null NULL
 #define true 0x1

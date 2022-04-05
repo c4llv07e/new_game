@@ -1,7 +1,7 @@
 #!/bin/sh
 
 SOURCES=$(find src -name "*.c")
-LIBS=(SDL2)
+LIBS=(SDL2 lua)
 LIB_PREFIX=${LIB_PREFIX:-"-l"}
 CC=${CC:-tcc}
 DEBUG=${DEBUG:-true}

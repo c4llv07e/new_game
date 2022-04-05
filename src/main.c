@@ -5,11 +5,23 @@
 
 #include "game.h"
 #include "render.h"
+#include "lua_game.h"
 
 /* main */
 
 Return window = {.data = null, .is_null = true};
+Return lua_state = {.data = null, .is_null = true};
 Int current_error = ok;
+
+Int
+testCall(lua_State* state)
+{
+  lua_getglobal(state, "print");
+  lua_pushstring(state, "test");
+  lua_call(state, 0x1, 0x0);
+  lua_pushnumber(state, 42);
+  return 0x1;
+}
 
 Int
 main(None)
@@ -20,6 +32,11 @@ main(None)
   window = render_window_create("test", 0x800, 0x800);
 
   game_start();
+
+  lua_state = lua_state_create();
+  lua_state_register_func(lua_state, "testCall", testCall);
+  lua_state_exec_file(lua_state, "main.lua");
+  lua_state_close(lua_state);
 
   while (!render_window_should_close(window))
     {
