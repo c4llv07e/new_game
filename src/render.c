@@ -14,7 +14,17 @@ render_init(None)
               "error: %s\n", SDL_GetError());
       return error_system;
     }
-
+  if (TTF_Init() == -1)
+    {
+      printf("Couldn't initialize TTF: %s\n", SDL_GetError());
+      return error_system;
+    }
+  comicz = TTF_OpenFont("fonts/comicz.ttf", 48);
+  if (!comicz)
+    {
+      printf("Failed to open ttf: %s\n", SDL_GetError());
+      exit(1);
+    }
   return ok;
 }
 

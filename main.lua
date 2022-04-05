@@ -37,7 +37,7 @@ for i = 0, 360*e-1, 1 do
     draw_color_line(100, 100, (math.sin(i/e/56)*100)+(i/1.8/e), math.cos(i/e/56)*100+100, a*255, b*255, c*255, 255)
 end
 
-e = 16
+e = 32
 for i = 0, 360*e-1 do
     a,b,c = HSVToRGB(i/e, 1, 1)
     draw_color_line(300, 100, (math.sin(i/e/56)*100)+(i/1.8/e)+200, math.cos(i/e/56)*100+100, a*255, b*255, c*255, 255)
