@@ -72,3 +72,11 @@ lua_state_register_func(Return state, const char* name, int (*func)(lua_State*))
 
   return state;
 }
+Return
+lua_call_func(Return state, char* name, Int arg_cout, Int ret_cout)
+{
+  lua_getglobal(state.data, name);
+  lua_call(state.data, arg_cout, ret_cout);
+//   lua_pushstring(state, "test");
+  return state;
+};

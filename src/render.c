@@ -19,8 +19,8 @@ render_init(None)
       printf("Couldn't initialize TTF: %s\n", SDL_GetError());
       return error_system;
     }
-  comicz = TTF_OpenFont("fonts/comicz.ttf", 48);
-  if (!comicz)
+  TTF_Font* lib_fonts = TTF_OpenFont("fonts/Liberation-mono.ttf", 48);
+  if (!lib_fonts)
     {
       printf("Failed to open ttf: %s\n", SDL_GetError());
       exit(1);
@@ -41,11 +41,11 @@ render_window_create(const char* name, Int width, Int height)
 {
   Return ret;
   Render_window* rwind;
-  
+
   rwind = (Render_window*) malloc(sizeof(Render_window));
   if (rwind == null)
     return (Return){.data = null, .is_null = true};
-  
+
   ret.data = rwind;
   /* window */
   rwind->window = SDL_CreateWindow(name,
@@ -85,7 +85,7 @@ render_window_destroy(Return window)
   free(window.data);
   window.data = null;
   window.is_null = true;
-  
+
   return ok;
 }
 
@@ -103,6 +103,10 @@ render_window_poll_events(Return window)
         {
         case SDL_QUIT:
           rwind->window_should_close = true;
+          break;
+        case SDL_KEYDOWN:
+          keydown_event_handle(event.key);
+          break;
         }
     }
   return window;

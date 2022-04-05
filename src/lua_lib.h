@@ -6,7 +6,11 @@
 #include "standard.h"
 #include "define.h"
 #include "lua_game.h"
+#include "render.h"
 
-extern Return lua_lib_init(Return state);
+extern char* key_func_name[100];
+extern Return key_func_state[100];
+
+extern Return lua_lib_init(Return state, Return _window);
 
 #endif /* GAME_LUA_LIB_INC */

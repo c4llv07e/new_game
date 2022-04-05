@@ -1,13 +1,8 @@
 function HSVToRGB( hue, saturation, value )
-	-- Returns the RGB equivalent of the given HSV-defined color
-	-- (adapted from some code found around the web)
-
-	-- If it's achromatic, just return the value
 	if saturation == 0 then
 		return value, value, value;
 	end;
 
-	-- Get the hue sector
 	local hue_sector = math.floor( hue / 60 );
 	local hue_sector_offset = ( hue / 60 ) - hue_sector;
 
@@ -30,11 +25,13 @@ function HSVToRGB( hue, saturation, value )
 	end;
 end;
 
-e = 0.1
 
+x, y = get_mouse_pos()
+
+e = 0.1
 for i = 0, 360*e-1, 1 do
     a,b,c = HSVToRGB(i/e, 1, 1)
-    draw_color_line(100, 100, (math.sin(i/e/56)*100)+(i/1.8/e), math.cos(i/e/56)*100+100, a*255, b*255, c*255, 255)
+    draw_color_line(x, y, (math.sin(i/e/56)*100)+(i/1.8/e)+x-100, math.cos(i/e/56)*100+y, a*255, b*255, c*255, 255)
 end
 
 e = 32
