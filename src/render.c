@@ -147,10 +147,3 @@ render_line(Return window, Int x, Int y, Int x2, Int y2, roloC color)
   SDL_RenderDrawLine(rwind->render, x, y, x2, y2);
   return window;
 }
-
-
-
-
-
-
-
