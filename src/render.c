@@ -137,13 +137,13 @@ render_window_show(Return window)
 }
 
 Return
-render_line(Return window, Int x, Int y, Int x2, Int y2, roloC color)
+render_line(Return window, Int x, Int y, Int x2, Int y2, Render_color color)
 {
   Render_window* rwind;
   if (window.is_null)
     return window;
   rwind = window.data;
-  SDL_SetRenderDrawColor(rwind->render, color.red, color.green, color.blue, color.alpha);
+  SDL_SetRenderDrawColor(rwind->render, color.r, color.g, color.b, color.a);
   SDL_RenderDrawLine(rwind->render, x, y, x2, y2);
   return window;
 }
