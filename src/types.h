@@ -33,4 +33,20 @@ typedef struct Return
   Bool is_null;
 } Return;
 
+typedef struct Color
+{
+  Int red;
+  Int green;
+  Int blue;
+  Int alpha;
+} Color;
+
+typedef struct roloC
+{
+  Int alpha;
+  Int blue;
+  Int green;
+  Int red;
+} roloC;
+
 #endif /* GAME_INCLUDE_TYPES */

@@ -3,6 +3,7 @@
 
 #define SDL_DISABLE_IMMINTRIN_H
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 Int
 render_init(None)
@@ -134,3 +135,22 @@ render_window_show(Return window)
   SDL_RenderPresent(rwind->render);
   return window;
 }
+
+Return
+render_line(Return window, Int x, Int y, Int x2, Int y2, roloC color)
+{
+  Render_window* rwind;
+  if (window.is_null)
+    return window;
+  rwind = window.data;
+  SDL_SetRenderDrawColor(rwind->render, color.red, color.green, color.blue, color.alpha);
+  SDL_RenderDrawLine(rwind->render, x, y, x2, y2);
+  return window;
+}
+
+
+
+
+
+
+
