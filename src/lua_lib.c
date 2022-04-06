@@ -118,7 +118,7 @@ delay(lua_State* state)
 {
   double t;
   t = lua_tonumber(state, -1);
-  lua_pop(state,1);
+  lua_pop(state, 1);
   system_wait(t);
   return 0x0;
 }
@@ -146,7 +146,7 @@ lua_lib_init(Return state, Return _window)
 Int
 draw_text(lua_State* state)
 {
-  int x,y;
+  int x, y;
   char * text;
   x = lua_tointeger(state, -3);
   y = lua_tointeger(state, -2);
