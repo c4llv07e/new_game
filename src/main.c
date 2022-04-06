@@ -22,11 +22,12 @@ main(None)
     return error_upper;
 
   window = render_window_create("test", 0x800, 0x800);
-
-  game_start();
-
+  
   lua_state = lua_state_create();
   lua_lib_init(lua_state, window);
+
+  game_start();
+  lua_state_exec_file(lua_state, "init.lua");
 
   while (!render_window_should_close(window))
     {
