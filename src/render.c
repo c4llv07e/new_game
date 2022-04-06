@@ -5,6 +5,9 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
+#define FONT_LOCATION "fonts/Liberation-mono.ttf"
+#define FONT_SIZE 48
+
 Int
 render_init(None)
 {
@@ -19,8 +22,8 @@ render_init(None)
       fprintf(stderr, "Couldn't initialize TTF: %s\n", SDL_GetError());
       return error_system;
     }
-  TTF_Font* lib_fonts = TTF_OpenFont("fonts/Liberation-mono.ttf", 48);
-  if (!lib_fonts)
+  TTF_Font* lib_fonts = TTF_OpenFont(FONT_LOCATION, FONT_SIZE);
+  if (lib_fonts == null)
     {
       fprintf(stderr, "Failed to open ttf: %s\n", SDL_GetError());
       exit(1);
