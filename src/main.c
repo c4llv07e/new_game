@@ -3,7 +3,6 @@
 #include "types.h"
 #include "define.h"
 
-#include "game.h"
 #include "render.h"
 #include "lua_game.h"
 #include "lua_lib.h"
@@ -26,7 +25,6 @@ main(None)
   lua_state = lua_state_create();
   lua_lib_init(lua_state, window);
 
-  game_start();
   lua_state_exec_file(lua_state, "init.lua");
 
   while (!render_window_should_close(window))
@@ -37,7 +35,6 @@ main(None)
       render_window_poll_events(window);
     }
 
-  game_end();
   lua_state_close(lua_state);
   render_window_destroy(window);
 
