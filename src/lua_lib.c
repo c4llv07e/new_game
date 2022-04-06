@@ -130,19 +130,6 @@ println(lua_State* state)
   print(state);
 }
 
-Return
-lua_lib_init(Return state, Return _window)
-{
-  lwindow = _window;
-  if (state.is_null)
-    return state;
-  for (Int i = 0x0; i < functions_len; ++i)
-    {
-      lua_state_register_func(state, functions_names[i], functions_pointers[i]);
-    }
-  return state;
-}
-
 Int
 draw_text(lua_State* state)
 {
@@ -155,4 +142,17 @@ draw_text(lua_State* state)
   render_text(lwindow, x, y, text,
               (Render_color){.a = 0xff, .b = 0xff, .g = 0xff, .r = 0xff});
   return 0x0;
+}
+
+Return
+lua_lib_init(Return state, Return _window)
+{
+  lwindow = _window;
+  if (state.is_null)
+    return state;
+  for (Int i = 0x0; i < functions_len; ++i)
+    {
+      lua_state_register_func(state, functions_names[i], functions_pointers[i]);
+    }
+  return state;
 }
