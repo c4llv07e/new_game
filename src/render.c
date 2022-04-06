@@ -14,15 +14,15 @@ render_init(None)
               "error: %s\n", SDL_GetError());
       return error_system;
     }
-  if (TTF_Init() == -1)
+  if (TTF_Init() == -0x1)
     {
-      printf("Couldn't initialize TTF: %s\n", SDL_GetError());
+      fprintf(stderr, "Couldn't initialize TTF: %s\n", SDL_GetError());
       return error_system;
     }
   TTF_Font* lib_fonts = TTF_OpenFont("fonts/Liberation-mono.ttf", 48);
   if (!lib_fonts)
     {
-      printf("Failed to open ttf: %s\n", SDL_GetError());
+      fprintf(stderr, "Failed to open ttf: %s\n", SDL_GetError());
       exit(1);
     }
   return ok;
