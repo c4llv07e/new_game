@@ -103,10 +103,13 @@ render_window_poll_events(Return window)
         {
         case SDL_QUIT:
           rwind->window_should_close = true;
+          break;/*
+        case SDL_MOUSEBUTTONDOWN:
+          mouse_event_handle(event.button);
           break;
         case SDL_KEYDOWN:
           keydown_event_handle(event.key);
-          break;
+          break;*/
         }
     }
   return window;
@@ -151,7 +154,7 @@ render_window_show(Return window)
 }
 
 Return
-render_line(Return window, Int x, Int y, Int x2, Int y2, Render_color color)
+render_line(Return window, double x, double y, double x2, double y2, Render_color color)
 {
   Render_window* rwind;
   if (window.is_null)
@@ -161,3 +164,10 @@ render_line(Return window, Int x, Int y, Int x2, Int y2, Render_color color)
   SDL_RenderDrawLine(rwind->render, x, y, x2, y2);
   return window;
 }
+
+Return
+render_text(Return window, double x, double y, char *text,Render_color color)
+{
+
+  return window;
+};

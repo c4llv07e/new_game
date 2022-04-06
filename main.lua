@@ -25,17 +25,40 @@ function HSVToRGB( hue, saturation, value )
 	end;
 end;
 
+function circuit(x,y,r,t)
+	for i = 0, 360/t-1 do
+    draw_line(math.sin((i*t+t)/57.295)*r+x, math.cos((i*t+t)/57.295)*r+y, math.sin(i*t/57.295)*r+x, math.cos(i*t/57.295)*r+y)
+	end
+	for i = 0, (r*2)/t-1 do
+    draw_line(math.sin(i*t/57.295)*r*(-1)+x, math.cos(i*t/57.295)*r+y, math.sin(i*t/57.295)*r+x, math.cos(i*t/57.295)*r+y)
+	end
+	for i = 0, (r*2)/t do
+    draw_line(math.sin(i*t/57.295)*r+x, math.cos(i*t/57.295)*r*-1+y, math.sin(i*t/57.295)*r+x, math.cos(i*t/57.295)*r+y)
+	end
+end
+
+
+cl = 6
+
+function mouse_click()
+	print("a")
+	cl = cl+1
+end
+
 
 x, y = get_mouse_pos()
-
-e = 0.1
-for i = 0, 360*e-1, 1 do
-    a,b,c = HSVToRGB(i/e, 1, 1)
-    draw_color_line(x, y, (math.sin(i/e/56)*100)+(i/1.8/e)+x-100, math.cos(i/e/56)*100+y, a*255, b*255, c*255, 255)
-end
-
-e = 32
+--[[
+e = 1
 for i = 0, 360*e-1 do
     a,b,c = HSVToRGB(i/e, 1, 1)
-    draw_color_line(300, 100, (math.sin(i/e/56)*100)+(i/1.8/e)+200, math.cos(i/e/56)*100+100, a*255, b*255, c*255, 255)
+    draw_color_line(x, y, (math.sin(i/e/56)*100)+(i/1.8/e)+x-100, math.cos(i/e/56)*100+y, a*255, b*255, c*255, 255)
+end]]
+
+
+cord = {30,20,0,50,100,150,50,200,0,150,100,50,70,20}
+
+for i=1, cl do
+  draw_color_line(cord[i*2-1],cord[i*2],cord[i*2+1],cord[i*2+2], 255, 0, 0, 255)
 end
+
+draw_color_line(50,20,50,200, 255, 0, 0, 255)
