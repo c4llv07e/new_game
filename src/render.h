@@ -34,7 +34,7 @@ extern Return render_window_show(Return window);
 extern Return render_window_clear(Return window);
 extern Bool render_window_should_close(Return window);
 extern Return render_window_poll_events(Return window);
-extern Return render_line(Return window, double x,double y,double x2,double y2,Render_color color);
+extern Return render_line(Return window, double x, double y, double x2, double y2, Render_color color);
 extern Return render_text(Return window, double x, double y, char *text,Render_color color);
 
 #endif /* GAME_RENDER_INC */
