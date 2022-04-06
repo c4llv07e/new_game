@@ -18,7 +18,7 @@ Return lwindow;
 
 typedef enum functions
   {
-    print_func = 0x0,    
+    print_func = 0x0,
     println_func,
     delay_func,
     drawline_func,
