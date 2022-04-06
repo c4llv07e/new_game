@@ -166,8 +166,8 @@ render_line(Return window, double x, double y, double x2, double y2, Render_colo
 }
 
 Return
-render_text(Return window, double x, double y, char *text,Render_color color)
+render_text(Return window, double x, double y, char *text, Render_color color)
 {
-
+  /* TODO: write function for text renderer */
   return window;
 };
