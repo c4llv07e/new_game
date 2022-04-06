@@ -10,6 +10,5 @@
 
 extern Int system_wait(Int milis);
 extern Int system_mouse_pos(Int* x, Int* y);
-extern Int keydown_event_handle(SDL_KeyboardEvent event);
 
 #endif /* GAME_SYSTEM_INC */

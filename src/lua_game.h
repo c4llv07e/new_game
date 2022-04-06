@@ -17,5 +17,6 @@ extern Return lua_state_exec_string(Return state, const char* com);
 extern Return lua_state_register_func(Return state, const char* name, int (*func)(lua_State*));
 extern Return lua_call_func(Return state, Int arg_cout, Int ret_cout);
 extern Return lua_set_func(Return state, const char* name);
+extern Return lua_set_func_ref(Return state, Int ref);
 
 #endif /* GAME_LUA_GAME_INC */

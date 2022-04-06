@@ -1,5 +1,6 @@
 
 #include "render.h"
+#include "lua_lib.h"
 
 #define SDL_DISABLE_IMMINTRIN_H
 #include <SDL2/SDL.h>
@@ -102,17 +103,12 @@ render_window_poll_events(Return window)
   SDL_Event event;
   while (SDL_PollEvent(&event))
     {
+      event_handle(event);
       switch (event.type)
         {
         case SDL_QUIT:
           rwind->window_should_close = true;
-          break;/*
-        case SDL_MOUSEBUTTONDOWN:
-          mouse_event_handle(event.button);
           break;
-        case SDL_KEYDOWN:
-          keydown_event_handle(event.key);
-          break;*/
         }
     }
   return window;

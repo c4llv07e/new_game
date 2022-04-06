@@ -96,3 +96,15 @@ lua_call_func(Return state, Int arg_cout, Int ret_cout)
   lua_call(state.data, arg_cout, ret_cout);
   return state;
 }
+
+Return
+lua_set_func_ref(Return state, Int ref)
+{
+  if (state.is_null)
+    {
+      fprintf(stderr, "error , can't set reference function without state\n");
+      return state;
+    }
+  lua_rawgeti(state.data, LUA_REGISTRYINDEX, ref);
+  return state;
+}
