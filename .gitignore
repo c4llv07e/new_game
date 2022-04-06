@@ -3,3 +3,7 @@
 main
 ?build
 build
+
+# configs from system
+new_game.kdev4
+.kdev4

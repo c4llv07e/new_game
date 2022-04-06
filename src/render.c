@@ -5,6 +5,9 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
+#define FONT_LOCATION "fonts/Liberation-mono.ttf"
+#define FONT_SIZE 48
+
 Int
 render_init(None)
 {
@@ -14,7 +17,17 @@ render_init(None)
               "error: %s\n", SDL_GetError());
       return error_system;
     }
-
+  if (TTF_Init() == -0x1)
+    {
+      fprintf(stderr, "Couldn't initialize TTF: %s\n", SDL_GetError());
+      return error_system;
+    }
+  TTF_Font* lib_fonts = TTF_OpenFont(FONT_LOCATION, FONT_SIZE);
+  if (lib_fonts == null)
+    {
+      fprintf(stderr, "Failed to open ttf: %s\n", SDL_GetError());
+      exit(1);
+    }
   return ok;
 }
 
@@ -31,11 +44,11 @@ render_window_create(const char* name, Int width, Int height)
 {
   Return ret;
   Render_window* rwind;
-  
+
   rwind = (Render_window*) malloc(sizeof(Render_window));
   if (rwind == null)
     return (Return){.data = null, .is_null = true};
-  
+
   ret.data = rwind;
   /* window */
   rwind->window = SDL_CreateWindow(name,
@@ -75,7 +88,7 @@ render_window_destroy(Return window)
   free(window.data);
   window.data = null;
   window.is_null = true;
-  
+
   return ok;
 }
 
@@ -93,6 +106,13 @@ render_window_poll_events(Return window)
         {
         case SDL_QUIT:
           rwind->window_should_close = true;
+          break;/*
+        case SDL_MOUSEBUTTONDOWN:
+          mouse_event_handle(event.button);
+          break;
+        case SDL_KEYDOWN:
+          keydown_event_handle(event.key);
+          break;*/
         }
     }
   return window;
@@ -137,7 +157,7 @@ render_window_show(Return window)
 }
 
 Return
-render_line(Return window, Int x, Int y, Int x2, Int y2, Render_color color)
+render_line(Return window, double x, double y, double x2, double y2, Render_color color)
 {
   Render_window* rwind;
   if (window.is_null)
@@ -147,3 +167,10 @@ render_line(Return window, Int x, Int y, Int x2, Int y2, Render_color color)
   SDL_RenderDrawLine(rwind->render, x, y, x2, y2);
   return window;
 }
+
+Return
+render_text(Return window, double x, double y, const char* text, Render_color color)
+{
+  /* TODO: write function for text renderer */
+  return window;
+};
