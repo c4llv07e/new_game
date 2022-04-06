@@ -21,7 +21,8 @@ Int
 keydown_event_handle(Return* state, SDL_KeyboardEvent event)
 {
   for(int i = 0;key_func_name[i] != 0x0;++i){
-    lua_call_func(key_func_state[i], key_func_name[i], 0, 0);
+    lua_set_func(key_func_state[i], key_func_name[i]);
+    lua_call_func(key_func_state[i], 0, 0);
   }
 
   return ok;

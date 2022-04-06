@@ -72,11 +72,27 @@ lua_state_register_func(Return state, const char* name, int (*func)(lua_State*))
 
   return state;
 }
+
 Return
-lua_call_func(Return state, char* name, Int arg_cout, Int ret_cout)
+lua_set_func(Return state, const char* name)
 {
+  if (state.is_null)
+    {
+      fprintf(stderr, "error , can't set function for null state\n");
+      return state;
+    }
   lua_getglobal(state.data, name);
-  lua_call(state.data, arg_cout, ret_cout);
-//   lua_pushstring(state, "test");
   return state;
-};
+}
+
+Return
+lua_call_func(Return state, Int arg_cout, Int ret_cout)
+{
+  if (state.is_null)
+    {
+      fprintf(stderr, "error , can't call function from null state\n");
+      return state;
+    }
+  lua_call(state.data, arg_cout, ret_cout);
+  return state;
+}

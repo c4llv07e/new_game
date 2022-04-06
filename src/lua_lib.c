@@ -146,12 +146,12 @@ lua_lib_init(Return state, Return _window)
 Int
 draw_text(lua_State* state)
 {
-  int x, y;
-  char * text;
+  Int x, y;
+  const char* text;
   x = lua_tointeger(state, -3);
   y = lua_tointeger(state, -2);
-  text = lua_tostring(state, -1);
-  lua_pop(state, 4);
+  text = lua_tolstring(state, -1, null);
+  lua_pop(state, 3);
   render_text(lwindow, x, y, text,
               (Render_color){.a = 0xff, .b = 0xff, .g = 0xff, .r = 0xff});
   return 0x0;
