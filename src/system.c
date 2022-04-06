@@ -18,7 +18,7 @@ system_mouse_pos(Int* x, Int* y)
 }
 
 Int
-keydown_event_handle(Return* state, SDL_KeyboardEvent event)
+keydown_event_handle(SDL_KeyboardEvent event)
 {
   for(int i = 0;key_func_name[i] != 0x0;++i){
     lua_set_func(key_func_state[i], key_func_name[i]);
