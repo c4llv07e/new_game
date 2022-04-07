@@ -13,6 +13,9 @@ extern Int draw_color_line(lua_State* state);
 extern Int add_eventlistener(lua_State* state);
 extern Int del_eventlistener(lua_State* state);
 
+/* internal funciton */
+static Int fix_eventlisteners();
+
 UInt callback_last = 0x0;
 Int callback_func[CALLBACK_BUFFER_SIZE] = { 0x0 };
 lua_State* callback_func_state[CALLBACK_BUFFER_SIZE] = { null };
@@ -176,6 +179,28 @@ add_eventlistener(lua_State* state)
   return 0x1;
 }
 
+static Int
+fix_eventlisteners(None)
+{
+  Int offset;
+  offset = 0x0;
+  Int i;
+  for (i = 0x0; i+offset < callback_last; ++i)
+    {
+      while (callback_func_state[i+offset] == null)
+        ++offset;
+      if (offset == 0x0)
+        continue;
+      callback_func[i] = callback_func[i+offset];
+      callback_func_state[i] = callback_func_state[i+offset];
+      callback_func_type[i] = callback_func_type[i+offset];
+      callback_func_state[i+offset] = null;
+    }
+  callback_last = i;
+
+  return offset;
+}
+
 Int
 del_eventlistener(lua_State* state)
 {
@@ -191,6 +216,7 @@ del_eventlistener(lua_State* state)
       if (callback_func[i] == ref)
         callback_func_state[i] = null;
     }
+  fix_eventlisteners();
   return 0x0;
 }
 
