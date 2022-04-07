@@ -10,7 +10,8 @@ extern Int draw_line(lua_State* state);
 extern Int draw_text(lua_State* state);
 extern Int get_mouse_pos(lua_State* state);
 extern Int draw_color_line(lua_State* state);
-extern Int on_event(lua_State* state);
+extern Int add_eventlistener(lua_State* state);
+extern Int del_eventlistener(lua_State* state);
 
 UInt callback_last = 0x0;
 Int callback_func[CALLBACK_BUFFER_SIZE] = { 0x0 };
@@ -28,7 +29,8 @@ typedef enum functions
     drawtext_func,
     drawcolorline_func,
     get_mouse_pos_func,
-    on_event_func,
+    add_eventlistener_func,
+    del_eventlistener_func,
     functions_len,
   } functions;
 
@@ -41,7 +43,8 @@ const char* functions_names[functions_len] =
     [drawtext_func] = "draw_text",
     [get_mouse_pos_func] = "get_mouse_pos",
     [drawcolorline_func] = "draw_color_line",
-    [on_event_func] = "on_event",
+    [add_eventlistener_func] = "add_eventlistener",
+    [del_eventlistener_func] = "del_eventlistener",
   };
 
 Int (*functions_pointers[functions_len])(lua_State* state) =
@@ -53,7 +56,8 @@ Int (*functions_pointers[functions_len])(lua_State* state) =
     [drawtext_func] = draw_text,
     [get_mouse_pos_func] = get_mouse_pos,
     [drawcolorline_func] = draw_color_line,
-    [on_event_func] = on_event,
+    [add_eventlistener_func] = add_eventlistener,
+    [del_eventlistener_func] = del_eventlistener,
   };
 
 
@@ -151,21 +155,42 @@ draw_text(lua_State* state)
 }
 
 Int
-on_event(lua_State* state)
+add_eventlistener(lua_State* state)
 {
   const char* type;
+  Int ref;
   
   type = lua_tolstring(state, -0x1, null);
   lua_pop(state, 0x1);
   
-  callback_func[callback_last] = luaL_ref(state, LUA_REGISTRYINDEX);
-  fprintf(stdout, "%x\n", callback_func[callback_last]);
+  ref = luaL_ref(state, LUA_REGISTRYINDEX);
   lua_pop(state, 0x1);
 
+  callback_func[callback_last] = ref;
   callback_func_state[callback_last] = state;
   callback_func_type[callback_last] = SDL_KEYDOWN;
-  
   ++callback_last;
+
+  lua_pushnumber(state, ref);
+  
+  return 0x1;
+}
+
+Int
+del_eventlistener(lua_State* state)
+{
+  Int ref;
+  
+  ref = lua_tonumber(state, -1);
+  lua_pop(state, 0x1);
+
+  for (Int i = 0x0; i < callback_last; ++i)
+    {
+      if (callback_func_state[i] == null)
+        continue;
+      if (callback_func[i] == ref)
+        callback_func_state[i] = null;
+    }
   return 0x0;
 }
 
@@ -185,9 +210,10 @@ lua_lib_init(Return state, Return _window)
 Int
 event_handle(SDL_Event event)
 {
-  for (Int i = 0x0; callback_func_state[i] != null; ++i)
+  for (Int i = 0x0; i < callback_last; ++i)
     {
-      if (callback_func_type[i] == event.type)
+      if (callback_func_type[i] == event.type
+          && callback_func_state[i] != null)
         {
           Return state = (Return)
             { .data = callback_func_state[i], .is_null = false };

@@ -5,4 +5,5 @@ prtSomething = function ()
    println("hi")
 end
 
-on_event(prtSomething, "12")
+ref = add_eventlistener(prtSomething, "12")
+del_eventlistener(ref)
