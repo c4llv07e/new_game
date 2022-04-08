@@ -230,6 +230,7 @@ lua_lib_init(Return state, Return _window)
     {
       lua_state_register_func(state, functions_names[i], functions_pointers[i]);
     }
+  setvbuf(stdout, NULL, _IONBF, 0);
   return state;
 }
 
