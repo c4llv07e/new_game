@@ -8,8 +8,6 @@
 #include "lua_lib.h"
 #include "system.h"
 
-/* main */
-
 Return window = {.data = null, .is_null = true};
 Return lua_state = {.data = null, .is_null = true};
 Int current_error = ok;
