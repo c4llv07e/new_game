@@ -16,6 +16,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: intall libs
-        run: sudo apt install libsdl2-dev libsdl2-ttf-dev lua5.3 gcc
+        run: sudo apt install libsdl2-dev libsdl2-ttf-dev lua5.3 liblua5.3-dev gcc
       - name: run build script
         run: CC=gcc ./build.sh
