@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 SOURCES=$(find src -name "*.c")
 LIBS=(SDL2 SDL2_ttf lua)
