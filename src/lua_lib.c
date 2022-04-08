@@ -77,6 +77,7 @@ print(lua_State* state)
       log = lua_tolstring(state, i-arg_len, null);
       fputs(log, stdout);
     }
+  fflush(stdout);
   lua_pop(state, arg_len);
   return 0x0;
 }
@@ -230,7 +231,6 @@ lua_lib_init(Return state, Return _window)
     {
       lua_state_register_func(state, functions_names[i], functions_pointers[i]);
     }
-  setvbuf(stdout, NULL, _IONBF, 0);
   return state;
 }
 
