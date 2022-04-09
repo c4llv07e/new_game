@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 SOURCES=$(find src -name "*.c")
-LIBS=(sdl2 lua53)
-ADD_LINKS=(SDL2_ttf)
+LINKS=(SDL2 SDL2_ttf lua5.3)
+INCLUDES=("/usr/include/SDL2" "/usr/include/5.3")
 CC=${CC:-tcc}
 DEBUG=${DEBUG:-true}
 DEBUG_PREFIX=${DEBUG_PREFIX:-"-g"}
@@ -12,12 +12,12 @@ DEBUG_PREFIX=${DEBUG_PREFIX:-"-g"}
         || DEBUG_PARAM=''
 
 LIB_PARAM=""
-for lib in ${LIBS[@]};
+for inc in ${INCLUDES[@]};
 do
-    LIB_PARAM="$LIB_PARAM $(pkgconf --libs --cflags $lib)";
+    LIB_PARAM="$LIB_PARAM -I$inc";
 done;
 
-for link in ${ADD_LINKS[@]};
+for link in ${LINKS[@]};
 do
     LIB_PARAM="$LIB_PARAM -l$link";
 done;
