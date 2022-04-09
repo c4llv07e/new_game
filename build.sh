@@ -2,7 +2,7 @@
 
 SOURCES=$(find src -name "*.c")
 LINKS=(SDL2 SDL2_ttf lua5.3)
-INCLUDES=("/usr/include/SDL2" "/usr/include/5.3")
+INCLUDES=("/usr/include/SDL2" "/usr/include/lua5.3")
 CC=${CC:-tcc}
 DEBUG=${DEBUG:-true}
 DEBUG_PREFIX=${DEBUG_PREFIX:-"-g"}
