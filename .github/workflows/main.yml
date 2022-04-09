@@ -18,7 +18,7 @@ jobs:
       - name: intall libs
         run: |
              sudo apt install libsdl2-dev libsdl2-ttf-dev
-             sudo apt install liblua5.4-dev gcc cmake
+             sudo apt install liblua5.2-dev gcc cmake
       - name: run build script
         run: |
              cmake -S . -B _build
