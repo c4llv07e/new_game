@@ -1,8 +1,8 @@
 #!/bin/sh
 
 SOURCES=$(find src -name "*.c")
-LIBS=(SDL2 SDL2_ttf lua)
-LIB_PREFIX=${LIB_PREFIX:-"-l"}
+LIBS=(sdl2 lua53)
+ADD_LINKS=(SDL2_ttf)
 CC=${CC:-tcc}
 DEBUG=${DEBUG:-true}
 DEBUG_PREFIX=${DEBUG_PREFIX:-"-g"}
@@ -12,13 +12,18 @@ DEBUG_PREFIX=${DEBUG_PREFIX:-"-g"}
         || DEBUG_PARAM=''
 
 LIB_PARAM=""
-for i in ${LIBS[@]};
+for lib in ${LIBS[@]};
 do
-    LIB_PARAM="$LIB_PARAM $LIB_PREFIX$i ";
+    LIB_PARAM="$LIB_PARAM $(pkgconf --libs --cflags $lib)";
+done;
+
+for link in ${ADD_LINKS[@]};
+do
+    LIB_PARAM="$LIB_PARAM -l$link";
 done;
 
 [[ -n "$SOURCES" ]] \
-    && $CC $DEBUG_PARAM $LIB_PARAM $SOURCES -o main \
+    && echo $CC $DEBUG_PARAM $LIB_PARAM $SOURCES -o main \
     && exit 0 \
     || echo "error on build" \
     && exit 1
