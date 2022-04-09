@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 SOURCES=$(find src -name "*.c")
 LIBS=(sdl2 lua53)
