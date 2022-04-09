@@ -23,7 +23,7 @@ do
 done;
 
 [[ -n "$SOURCES" ]] \
-    && echo $CC $DEBUG_PARAM $LIB_PARAM $SOURCES -o main \
+    && $CC $DEBUG_PARAM $LIB_PARAM $SOURCES -o main \
     && exit 0 \
     || echo "error on build" \
     && exit 1
