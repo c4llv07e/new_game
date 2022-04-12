@@ -161,10 +161,10 @@ draw_text(lua_State* state)
 Int
 add_eventlistener(lua_State* state)
 {
-  const char* type;
+  Int type;
   Int ref;
   
-  type = lua_tolstring(state, -0x1, null);
+  type = lua_tointeger(state, -0x1);
   lua_pop(state, 0x1);
   
   ref = luaL_ref(state, LUA_REGISTRYINDEX);
@@ -172,7 +172,7 @@ add_eventlistener(lua_State* state)
 
   callback_func[callback_last] = ref;
   callback_func_state[callback_last] = state;
-  callback_func_type[callback_last] = SDL_KEYDOWN;
+  callback_func_type[callback_last] = type;
   ++callback_last;
 
   lua_pushnumber(state, ref);
@@ -231,6 +231,14 @@ lua_lib_init(Return state, Return _window)
     {
       lua_state_register_func(state, functions_names[i], functions_pointers[i]);
     }
+  lua_newtable(state.data);
+  lua_pushstring(state.data, "key_down");
+  lua_pushinteger(state.data, SDL_KEYDOWN);
+  lua_settable(state.data, -0x3);
+  lua_pushstring(state.data, "mouse_move");
+  lua_pushinteger(state.data, SDL_MOUSEMOTION);
+  lua_settable(state.data, -0x3);
+  lua_setglobal(state.data, "event");
   return state;
 }
 

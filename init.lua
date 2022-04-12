@@ -1,8 +1,13 @@
 
 println("Welcome ", "to", " the ", "new_game", "!!!")
 
-prtSomething = function ()
-   print("hi")
+key_event = function ()
+   println("hi")
 end
 
-add_eventlistener(prtSomething, "12")
+mouse_event = function ()
+   println("hello")
+end
+
+add_eventlistener(key_event, event.key_down)
+add_eventlistener(mouse_event, event.mouse_move)
