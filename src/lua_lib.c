@@ -3,6 +3,8 @@
 #include "render.h"
 #include "system.h"
 
+#include <stddef.h>
+
 extern Int print(lua_State* state);
 extern Int println(lua_State* state);
 extern Int delay(lua_State* state);
@@ -242,6 +244,53 @@ lua_lib_init(Return state, Return _window)
   return state;
 }
 
+typedef struct Lua_event_handle_bundle
+{
+  SDL_Event event;
+  Int args_len;
+  size_t arguments[0x5];
+} Lua_event_handle_bundle;
+
+Lua_event_handle_bundle events_config_bundle[] =
+  {
+    {
+      .event = SDL_KEYDOWN,
+      .args_len = 0x1,
+      .arguments = {
+        offsetof(SDL_Event, key.keysym.scancode),
+      }
+    },
+    {
+      .event = SDL_MOUSEMOTION,
+      .args_len = 0x2,
+      .arguments = {
+        offsetof(SDL_Event, motion.x),
+        offsetof(SDL_Event, motion.y),
+      }
+    },
+  };
+
+static Int
+inter_lua_push_event_args(SDL_Event event)
+{
+  UInt config_iter = 0x0;
+  while (events_config_bundle[config_iter].event.type != event.type
+         && (sizeof(events_config_bundle)/sizeof(Lua_event_handle_bundle)) > config_iter)
+    ++config_iter;
+  fprintf(stdout, "offset: %d\nreal offset: %d\n",
+          offsetof(SDL_Event, motion.x),
+          (uintptr_t)(&event.motion.x) - (uintptr_t)&event);
+  fprintf(stdout, "type: %d\n", config_iter);
+  for (Int i = 0x0; i < events_config_bundle[config_iter].args_len; ++i)
+    fprintf(stdout, "%x %x %x %x\n",
+            &event,
+            events_config_bundle[config_iter].arguments[i],
+            ((&event)+(events_config_bundle[config_iter].arguments[i])),
+            (&event.motion.x)
+            );
+  return 0x0;
+}
+
 Int
 event_handle(SDL_Event event)
 {
@@ -253,6 +302,7 @@ event_handle(SDL_Event event)
           Return state = (Return)
             { .data = callback_func_state[i], .is_null = false };
           lua_set_func_ref(state, callback_func[i]);
+          inter_lua_push_event_args(event);
           lua_call_func(state, 0x0, 0x0);
         }
     }
