@@ -1,6 +1,4 @@
 
-println("Welcome ", "to", " the ", "new_game", "!!!")
-
 key_event = function (key)
    println(key)
 end
