@@ -244,11 +244,21 @@ lua_lib_init(Return state, Return _window)
   return state;
 }
 
+typedef enum Event_arg_type
+  {
+    type_none = 0x0,
+    type_int,
+    type_string,
+    type_sdl_keycode,
+    types_length
+  } Event_arg_type;
+
 typedef struct Lua_event_handle_bundle
 {
   SDL_Event event;
   Int args_len;
   size_t arguments[0x5];
+  Event_arg_type args_types[0x5];
 } Lua_event_handle_bundle;
 
 Lua_event_handle_bundle events_config_bundle[] =
@@ -257,7 +267,10 @@ Lua_event_handle_bundle events_config_bundle[] =
       .event = SDL_KEYDOWN,
       .args_len = 0x1,
       .arguments = {
-        offsetof(SDL_Event, key.keysym.scancode),
+        offsetof(SDL_Event, key.keysym.sym),
+      },
+      .args_types = {
+        type_sdl_keycode
       }
     },
     {
@@ -266,6 +279,10 @@ Lua_event_handle_bundle events_config_bundle[] =
       .arguments = {
         offsetof(SDL_Event, motion.x),
         offsetof(SDL_Event, motion.y),
+      },
+      .args_types = {
+        type_int,
+        type_int
       }
     },
   };
@@ -277,17 +294,19 @@ inter_lua_push_event_args(SDL_Event event)
   while (events_config_bundle[config_iter].event.type != event.type
          && (sizeof(events_config_bundle)/sizeof(Lua_event_handle_bundle)) > config_iter)
     ++config_iter;
-  fprintf(stdout, "offset: %d\nreal offset: %d\n",
-          offsetof(SDL_Event, motion.x),
-          (uintptr_t)(&event.motion.x) - (uintptr_t)&event);
+  
   fprintf(stdout, "type: %d\n", config_iter);
   for (Int i = 0x0; i < events_config_bundle[config_iter].args_len; ++i)
-    fprintf(stdout, "%x %x %x %x\n",
-            &event,
-            events_config_bundle[config_iter].arguments[i],
-            ((&event)+(events_config_bundle[config_iter].arguments[i])),
-            (&event.motion.x)
-            );
+    {
+      size_t offset = events_config_bundle[config_iter].arguments[i];
+      const void* data = (((void*)&event)+offset);
+      if (events_config_bundle[config_iter].args_types[i] == type_sdl_keycode)
+        data = (void*)SDL_GetKeyName(*(SDL_Keycode*)data);
+      if (events_config_bundle[config_iter].args_types[i] == type_sdl_keycode)
+        fprintf(stdout, "%s\n", (const char*)data);
+      else
+        fprintf(stdout, "%d\n", *(Int*)data);
+    }
   return 0x0;
 }
 
