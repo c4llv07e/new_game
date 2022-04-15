@@ -287,27 +287,46 @@ Lua_event_handle_bundle events_config_bundle[] =
     },
   };
 
-static Int
-inter_lua_push_event_args(SDL_Event event)
+UInt
+find_event_number(SDL_Event event)
 {
-  UInt config_iter = 0x0;
+  UInt config_iter;
+  config_iter = 0x0;
   while (events_config_bundle[config_iter].event.type != event.type
          && (sizeof(events_config_bundle)/sizeof(Lua_event_handle_bundle)) > config_iter)
     ++config_iter;
+
+  return config_iter;
+}
+
+Int
+inter_lua_push_event_args(Return state, SDL_Event event)
+{
+  UInt config_iter = 0x0;
+
+  if (state.is_null)
+    return 0x0;
+
+  config_iter = find_event_number(event);
   
-  fprintf(stdout, "type: %d\n", config_iter);
   for (Int i = 0x0; i < events_config_bundle[config_iter].args_len; ++i)
     {
-      size_t offset = events_config_bundle[config_iter].arguments[i];
-      const void* data = (((void*)&event)+offset);
+      size_t offset;
+      const void* data;
+      
+      offset = events_config_bundle[config_iter].arguments[i];
+      data = (((void*)&event)+offset);
+
+      
       if (events_config_bundle[config_iter].args_types[i] == type_sdl_keycode)
         data = (void*)SDL_GetKeyName(*(SDL_Keycode*)data);
+      
       if (events_config_bundle[config_iter].args_types[i] == type_sdl_keycode)
-        fprintf(stdout, "%s\n", (const char*)data);
+        lua_pushstring(state.data, (const char*)data);
       else
-        fprintf(stdout, "%d\n", *(Int*)data);
+        lua_pushinteger(state.data, *(Int*)data);
     }
-  return 0x0;
+  return events_config_bundle[config_iter].args_len;
 }
 
 Int
@@ -318,11 +337,14 @@ event_handle(SDL_Event event)
       if (callback_func_type[i] == event.type
           && callback_func_state[i] != null)
         {
-          Return state = (Return)
-            { .data = callback_func_state[i], .is_null = false };
+          Return state;
+          Int args_len;
+          
+          state = (Return)
+            { .data = callback_func_state[i], .is_null = callback_func_state[i] == null };
           lua_set_func_ref(state, callback_func[i]);
-          inter_lua_push_event_args(event);
-          lua_call_func(state, 0x0, 0x0);
+          args_len = inter_lua_push_event_args(state, event);
+          lua_call_func(state, args_len, 0x0);
         }
     }
 }
