@@ -165,6 +165,42 @@ render_line(Return window, double x, double y, double x2, double y2, Render_colo
 }
 
 Return
+render_draw_box(Return window, Float x, Float y, Float w,
+                Float h, Render_color color)
+{
+  Render_window* rwind;
+  SDL_FRect rect;
+  
+  if (window.is_null)
+    return window;
+  rwind = window.data;
+
+  rect = (SDL_FRect){.x = x, .y = y, .w = w, .h = h};
+
+  SDL_SetRenderDrawColor(rwind->render, color.r, color.g, color.b, color.a);
+  SDL_RenderDrawRectF(rwind->render, &rect);
+  return window;
+}
+
+Return
+render_fill_box(Return window, Float x, Float y, Float w,
+                Float h, Render_color color)
+{
+  Render_window* rwind;
+  SDL_FRect rect;
+  
+  if (window.is_null)
+    return window;
+  rwind = window.data;
+
+  rect = (SDL_FRect){.x = x, .y = y, .w = w, .h = h};
+
+  SDL_SetRenderDrawColor(rwind->render, color.r, color.g, color.b, color.a);
+  SDL_RenderFillRectF(rwind->render, &rect);
+  return window;
+}
+
+Return
 render_text(Return window, double x, double y, const char* text, Render_color color)
 {
   /* TODO: write function for text renderer */

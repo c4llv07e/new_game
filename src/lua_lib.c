@@ -2,6 +2,7 @@
 #include "lua_lib.h"
 #include "render.h"
 #include "system.h"
+#include "game.h"
 
 #include <stddef.h>
 
@@ -14,6 +15,9 @@ extern Int get_mouse_pos(lua_State* state);
 extern Int draw_color_line(lua_State* state);
 extern Int add_eventlistener(lua_State* state);
 extern Int del_eventlistener(lua_State* state);
+extern Int add_game_ent(lua_State* state);
+extern Int game_ent_disable_render(lua_State* state);
+extern Int game_ent_enable_render(lua_State* state);
 
 /* internal funciton */
 static Int fix_eventlisteners();
@@ -36,6 +40,9 @@ typedef enum functions
     get_mouse_pos_func,
     add_eventlistener_func,
     del_eventlistener_func,
+    add_game_ent_func,
+    game_ent_disable_render_func,
+    game_ent_enable_render_func,
     functions_len,
   } functions;
 
@@ -50,6 +57,9 @@ const char* functions_names[functions_len] =
     [drawcolorline_func] = "draw_color_line",
     [add_eventlistener_func] = "add_eventlistener",
     [del_eventlistener_func] = "del_eventlistener",
+    [add_game_ent_func] = "add_game_ent",
+    [game_ent_disable_render_func] = "game_ent_disable_render",
+    [game_ent_enable_render_func] = "game_ent_enable_render",
   };
 
 Int (*functions_pointers[functions_len])(lua_State* state) =
@@ -63,6 +73,9 @@ Int (*functions_pointers[functions_len])(lua_State* state) =
     [drawcolorline_func] = draw_color_line,
     [add_eventlistener_func] = add_eventlistener,
     [del_eventlistener_func] = del_eventlistener,
+    [add_game_ent_func] = add_game_ent,
+    [game_ent_disable_render_func] = game_ent_disable_render,
+    [game_ent_enable_render_func] = game_ent_enable_render,
   };
 
 
@@ -82,6 +95,68 @@ print(lua_State* state)
   fflush(stdout);
   lua_pop(state, arg_len);
   return 0x0;
+}
+
+Int
+add_game_ent(lua_State* state)
+{
+  Float x, y, w, h;
+  Int r, g, b, a;
+  Return ent;
+  Render_color color;
+  
+  if (lua_gettop(state) != 0x8)
+    return lua_gettop(state);
+  
+  x = lua_tonumber(state, -0x8);
+  y = lua_tonumber(state, -0x7);
+  w = lua_tonumber(state, -0x6);
+  h = lua_tonumber(state, -0x5);
+  r = lua_tointeger(state, -0x4);
+  g = lua_tointeger(state, -0x3);
+  b = lua_tointeger(state, -0x2);
+  a = lua_tointeger(state, -0x1);
+  lua_pop(state, 0x8);
+
+  color = (Render_color){.r = r, .g = g, .b = b, .a = a};
+  ent = game_rect_create(x, y, w, h, color);
+  lua_pushlightuserdata(state, ent.data);
+  
+  return 0x1;
+}
+
+Int
+game_ent_disable_render(lua_State* state)
+{
+  Game_rect* rect;
+  Return rrect;
+
+  if (lua_gettop(state) != 0x1)
+    return lua_gettop(state);
+
+  rect = lua_touserdata(state, -0x1);
+  rrect.data = rect;
+  rrect.is_null = rect == null;
+  game_rect_disable_render(rrect);
+  
+  return 0x1;
+}
+
+Int
+game_ent_enable_render(lua_State* state)
+{
+  Game_rect* rect;
+  Return rrect;
+
+  if (lua_gettop(state) != 0x1)
+    return lua_gettop(state);
+
+  rect = lua_touserdata(state, -0x1);
+  rrect.data = rect;
+  rrect.is_null = rect == null;
+  game_rect_enable_render(rrect);
+  
+  return 0x1;
 }
 
 Int

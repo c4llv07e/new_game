@@ -1,11 +1,4 @@
 
-key_event = function (key)
-   println(key)
-end
+time = 0
 
-mouse_event = function (x, y)
-   println(x, " ", y)
-end
-
-add_eventlistener(key_event, event.key_down)
-add_eventlistener(mouse_event, event.mouse_move)
+ref = add_game_ent(50, 50, 50, 50, 0, 255, 255, 255)

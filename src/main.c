@@ -7,6 +7,7 @@
 #include "lua_game.h"
 #include "lua_lib.h"
 #include "system.h"
+#include "game.h"
 
 Return window = {.data = null, .is_null = true};
 Return lua_state = {.data = null, .is_null = true};
@@ -19,6 +20,8 @@ main(None)
     return error_upper;
 
   window = render_window_create("test", 0x800, 0x800);
+
+  game_init(window);
   
   lua_state = lua_state_create();
   lua_lib_init(lua_state, window);
@@ -28,6 +31,7 @@ main(None)
   while (!render_window_should_close(window))
     {
       render_window_clear(window);
+      game_loop();
       lua_state_exec_file(lua_state, "main.lua");
       render_window_show(window);
       render_window_poll_events(window);

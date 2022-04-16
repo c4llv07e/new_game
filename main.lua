@@ -62,3 +62,11 @@ for i=1, cl do
 end
 
 draw_color_line(50,20,50,200, 255, 0, 0, 255)
+
+if time % 50 > 25 then
+   game_ent_disable_render(ref)
+else
+   game_ent_enable_render(ref)
+end
+
+time = time + 1

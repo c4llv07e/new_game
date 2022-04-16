@@ -38,5 +38,9 @@ extern Return render_line(Return window, double x, double y,
                           double x2, double y2, Render_color color);
 extern Return render_text(Return window, double x, double y,
                           const char* text, Render_color color);
+extern Return render_draw_box(Return window, Float x, Float y, Float w,
+                              Float h, Render_color color);
+extern Return render_fill_box(Return window, Float x, Float y, Float w,
+                              Float h, Render_color color);
 
 #endif /* GAME_RENDER_INC */
